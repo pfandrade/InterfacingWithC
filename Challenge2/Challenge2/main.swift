@@ -17,5 +17,8 @@ Bu+4g4HWROmuAQ0MZoGT8ClKxuLQJUvzHw3RrzbfZOyslNKEm03aVNM6v1ayxEXA
 3Fo73tSpTsD72KscTe2U+4m+hNc3ahRSJg==
 """
 
+let key = Data(base64Encoded: base64Key)!
+let nonce = Data(base64Encoded: base64Nonce)!
+let cipherText = Data(base64Encoded: base64CipherText, options: .ignoreUnknownCharacters)!
 
 
