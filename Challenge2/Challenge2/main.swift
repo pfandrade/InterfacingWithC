@@ -22,6 +22,8 @@ let key = Data(base64Encoded: base64Key)!
 let nonce = Data(base64Encoded: base64Nonce)!
 let cipherText = Data(base64Encoded: base64CipherText, options: .ignoreUnknownCharacters)!
 
+let decryptInPlace = false
+
 let keyPtr = UnsafeMutablePointer<UInt8>.allocate(capacity: key.count)
 defer {
     keyPtr.deallocate()
@@ -34,23 +36,42 @@ defer {
 }
 nonce.copyBytes(to: noncePtr, count: nonce.count)
 
-
-let messageLength = cipherText.count - Int(crypto_secretbox_MACBYTES)
-let messagePtr = UnsafeMutablePointer<UInt8>.allocate(capacity: messageLength)
-defer {
-    messagePtr.deallocate()
+let messageData: Data
+if decryptInPlace {
+    let cipherTextPtr = UnsafeMutablePointer<UInt8>.allocate(capacity: cipherText.count)
+    defer {
+        cipherTextPtr.deallocate()
+    }
+    
+    cipherText.copyBytes(to: cipherTextPtr, count: cipherText.count)
+    
+    let success = crypto_secretbox_open_easy(cipherTextPtr, cipherTextPtr, UInt64(cipherText.count), noncePtr, keyPtr) == 0
+    guard success else {
+        exit(1)
+    }
+    
+    messageData = Data(bytes: cipherTextPtr, count: cipherText.count - Int(crypto_secretbox_MACBYTES))
+    
+}
+else {
+    let messageLength = cipherText.count - Int(crypto_secretbox_MACBYTES)
+    let messagePtr = UnsafeMutablePointer<UInt8>.allocate(capacity: messageLength)
+    defer {
+        messagePtr.deallocate()
+    }
+    
+    let success = cipherText.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> Bool in
+        let c = buffer.bindMemory(to: UInt8.self).baseAddress!
+        return crypto_secretbox_open_easy(messagePtr, c, UInt64(cipherText.count), noncePtr, keyPtr) == 0
+    }
+    
+    guard success else {
+        exit(1)
+    }
+    
+    messageData = Data(bytes: messagePtr, count: messageLength)
 }
 
-let success = cipherText.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> Bool in
-    let c = buffer.bindMemory(to: UInt8.self).baseAddress!
-    return crypto_secretbox_open_easy(messagePtr, c, UInt64(cipherText.count), noncePtr, keyPtr) == 0
-}
-
-guard success else {
-    exit(1)
-}
-
-let messageData = Data(bytes: messagePtr, count: messageLength)
 if let message = String(data: messageData, encoding: .utf8) {
     print(message)
 }
