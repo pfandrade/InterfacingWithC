@@ -1,4 +1,5 @@
 module Clibsodium {
     header "include/sodium.h"
+    link "sodium"
     export *
 }

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		276DC1C622B57E9B00992082 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276DC1C522B57E9B00992082 /* main.swift */; };
-		276DC1CE22B580B300992082 /* libsodium.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 276DC1CD22B580B300992082 /* libsodium.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,7 +25,6 @@
 /* Begin PBXFileReference section */
 		276DC1C222B57E9B00992082 /* Challenge2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Challenge2; sourceTree = BUILT_PRODUCTS_DIR; };
 		276DC1C522B57E9B00992082 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		276DC1CD22B580B300992082 /* libsodium.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsodium.a; path = Modules/libsodium/lib/libsodium.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,7 +32,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				276DC1CE22B580B300992082 /* libsodium.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,7 +66,6 @@
 		276DC1CC22B580B300992082 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				276DC1CD22B580B300992082 /* libsodium.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
