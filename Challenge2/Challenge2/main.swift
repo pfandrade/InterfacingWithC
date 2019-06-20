@@ -8,7 +8,7 @@
 
 /* For reference, the syntax of your module.modulemap file should look like this
  module MyModule {
-    include "include/someheader.h"
+    header "include/someheader.h"
     export *
  }
  */
